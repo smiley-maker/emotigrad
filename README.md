@@ -1,12 +1,17 @@
 # 🌈 EmotiGrad — Emotional Support for Your Optimizers
 
 <p align="center">
-  <img src="https://img.shields.io/badge/status-pre--release-blueviolet" />
-  <img src="https://img.shields.io/badge/tests-passing-brightgreen" />
-  <img src="https://img.shields.io/badge/code%20style-black-000000" />
-  <img src="https://img.shields.io/badge/linting-ruff-8A2BE2" />
-  <img src="https://img.shields.io/badge/license-MIT-green" />
+  <img src="docs/emotigrad_banner.png" alt="EmotiGrad Banner" width="100%" />
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/pypi/v/emotigrad?color=blue" />
+  <img src="https://img.shields.io/badge/python-blue" />
+  <img src="https://img.shields.io/badge/pytorch-orange" />
+  <img src="https://img.shields.io/badge/license-MIT-green" />
+  <img src="https://img.shields.io/badge/made%20with-personality-ff69b4" />
+</p>
+
 
 EmotiGrad is a tiny Python library that wraps your PyTorch optimizers and gives you emotionally-charged feedback during training, from wholesome encouragement to unhinged sass.
 
@@ -16,27 +21,54 @@ It aims to be:
 * **Fun but useful**: emotional logs + basic training insights
 * **Extensible**: easily add new "personalities" and behaviors
 
+## Features
+
+- Drop-in PyTorch optimizer wrapper
+- Emotional personalities with trend detection
+- `message_every=N` smoothing via averaged loss blocks
+- Extensible personality system (functions or classes)
+- Built-in registry for named personalities
+
+## Why EmotiGrad?
+
+Training deep learning models can be repetitive and opaque.  
+EmotiGrad adds a layer of emotional, trend-aware feedback that makes training:
+
+- more fun  
+- more human  
+- easier to interpret  
+- easier to debug (loss trends are highlighted automatically)
+
+
 ## Status
 
 > ⚠️ EmotiGrad is under active early development (pre-release).
 > Expect the API to evolve before version `0.1.0`.
 > Feedback and ideas are *very* welcome!
 
----
-
 ## Installation
 
-Install from source:
+📦 **PyPI Details:** https://pypi.org/project/emotigrad/
+
+EmotiGrad is available on PyPI for easy `pip` installation using the command below. 
+
+```bash
+pip install emotigrad
+```
+
+For development:
 
 ```bash
 git clone git@github.com:smiley-maker/emotigrad.git
 cd emotigrad
-pip install -e .
+pip install -e ".[dev]"
 ```
 
-PyPI packages will come in a later release.
+### Requirements
 
----
+- Python 3.10+
+- PyTorch (installed automatically on most systems, but GPU users may want a custom install)
+
 
 ## Quick Start
 
@@ -84,6 +116,29 @@ This produces smoother, more meaningful emotional feedback.
 Set `message_every=1` for per-step chatter.
 
 
+## Example Output
+
+Running the MNIST example (in `examples/mnist_training.py`) produces friendly, trend-aware messages like:
+
+```bash
+[Epoch 1] step=0, loss=2.3374
+✨ Let's get started! Initial average loss: 0.9651
+
+[Epoch 1] step=200, loss=0.2371
+💖 Nice! Loss improved from 0.3914 → 0.3277.
+💖 Nice! Loss improved from 0.3277 → 0.2768.
+
+[Epoch 1] step=600, loss=0.1402
+💖 Nice! Loss improved from 0.2588 → 0.2239.
+💖 Nice! Loss improved from 0.2239 → 0.2199.
+
+[Epoch 2] step=200, loss=0.1256
+🌱 It's okay! Loss went from 0.1459 → 0.1465. Learning isn't always monotonic.
+💖 Nice! Loss improved from 0.1702 → 0.1489.
+```
+
+Your model learns and your optimizer cheers you on.
+
 ## Personalities
 
 EmotiGrad ships with several built-in personalities, such as:
@@ -116,9 +171,9 @@ opt = EmotionalOptimizer(base_opt, personality="hype")
 
 You can find examples in the `examples/` directory:
 
-* `basic_usage.py`
-* `mnist_training.py`
-* `custom_personality.py`
+* `basic_usage.py`: minimal working example
+* `mnist_training.py`: full training loop with emotional feedback
+* `custom_personality.py`: how to define your own personality
 
 ## Roadmap
 
@@ -157,6 +212,20 @@ pytest
 
 We also recommend using a virtual environment or conda during local development.
 
+### Running Tests
+
+Run tests using:
+
+```bash
+pytest
+```
+
+Note that when using a virtual environment you made need to run with:
+
+```bash
+python -m pytest
+```
+
 
 ## Project Structure
 
@@ -175,6 +244,14 @@ emotigrad/
   pyproject.toml
 ```
 
+## Changelog
+
+### 0.0.1: First Release 🎉
+- `EmotionalOptimizer` class with averaged-loss trend detection
+- Built-in personalities (wholesome, sassy, quiet) with more on the way. 
+- Personality registry and option to create your own personalities. 
+- Examples with initial documentation.
+
 
 ## License
 
@@ -184,4 +261,5 @@ See the LICENSE file for details.
 
 ## Thanks for checking out EmotiGrad
 
-If you build something with it, please share it or open an issue, I’d love to see what you make!
+If you build something with it, please share it or open an issue, I’d love to see what you make! If you enjoy EmotiGrad, consider  starring the repo, it helps others discover it! ⭐️
+
