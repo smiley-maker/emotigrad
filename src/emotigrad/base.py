@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Union, Callable
+from typing import Optional, Union
 
 from torch.optim import Optimizer
 
 from .types import Personality
-
 
 PersonalityLike = Union[str, Personality]
 
@@ -37,7 +36,6 @@ class EmotionalOptimizer:
 
             self.personality = get_personality(self.personality)
 
-            
     def step(self, loss: Optional[float] = None, *args, **kwargs):
         """Perform an optimization step and optionally emit emotional feedback.
 
