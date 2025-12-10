@@ -71,3 +71,84 @@ def test_emotional_optimizer_calls_personality_when_enabled():
 
     assert len(messages) == 1
     assert "step=1" in messages[0]
+
+# Confirm personality is NOT called when enabled=False
+def test_emotional_optimizer_personality_not_called_when_disabled():
+    model = torch.nn.Linear(2, 1)
+    base_opt = torch.optim.SGD(model.parameters(), lr=0.1)
+
+    called = []
+
+    def fake_personality(loss, prev_loss, step):
+        called.append((loss, prev_loss, step))
+        return None
+
+    emo_opt = EmotionalOptimizer(
+        base_opt,
+        personality=fake_personality,
+        enabled=False,
+    )
+
+    x = torch.randn(2, 2)
+    y = torch.randn(2, 1)
+    preds = model(x)
+    loss = (preds - y).pow(2).mean()
+
+    emo_opt.zero_grad()
+    loss.backward()
+    emo_opt.step(loss=loss.item())
+
+    assert len(called) == 0
+
+# Confirm personality is called when loss is provided and enabled=True
+def test_smoke_emotional_optimizer_personality_called():
+    model = torch.nn.Linear(2, 1)
+    base_opt = torch.optim.SGD(model.parameters(), lr=0.1)
+
+    called = []
+
+    def fake_personality(loss, prev_loss, step):
+        called.append((loss, prev_loss, step))
+        return None
+
+    emo_opt = EmotionalOptimizer(
+        base_opt,
+        personality=fake_personality,
+        enabled=True,
+    )
+
+    x = torch.randn(2, 2)
+    y = torch.randn(2, 1)
+    preds = model(x)
+    loss = (preds - y).pow(2).mean()
+
+    emo_opt.zero_grad()
+    loss.backward()
+    emo_opt.step(loss=loss.item())
+
+    assert len(called) == 1
+
+# Confirm exceptions inside personalities do not crash step() and are safely swallowed
+def test_emotional_optimizer_personality_exceptions_handled():
+    model = torch.nn.Linear(2, 1)
+    base_opt = torch.optim.SGD(model.parameters(), lr=0.1)
+
+    def faulty_personality(loss, prev_loss, step):
+        raise RuntimeError("Deliberate failure inside personality")
+
+    emo_opt = EmotionalOptimizer(
+        base_opt,
+        personality=faulty_personality,
+        enabled=True,
+    )
+
+    x = torch.randn(2, 2)
+    y = torch.randn(2, 1)
+    preds = model(x)
+    loss = (preds - y).pow(2).mean()
+
+    emo_opt.zero_grad()
+    loss.backward()
+
+    # This should not raise, despite the personality raising internally
+    emo_opt.step(loss=loss.item())
