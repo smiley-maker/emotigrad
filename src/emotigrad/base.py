@@ -24,10 +24,18 @@ class EmotionalOptimizer:
     personality: PersonalityLike = "wholesome"
     enabled: bool = True
     print_fn: callable = print  # allows tests / users to override output
+    message_every : int = 1 # Number of steps between messages
 
     def __post_init__(self) -> None:
         self._step: int = 0
         self._prev_loss: Optional[float] = None
+
+        self._step: int = 0
+        self._prev_avg_loss: Optional[float] = None
+
+        # For averaging over the last N steps
+        self._block_loss_sum: float = 0.0
+        self._block_loss_count: int = 0
 
         # Resolve personality if given as a string
         if isinstance(self.personality, str):
@@ -50,9 +58,28 @@ class EmotionalOptimizer:
         result = self.optimizer.step(*args, **kwargs)
         self._step += 1
 
-        if self.enabled and loss is not None:
+        # Track losses for averaging
+        if loss is not None:
+            self._block_loss_sum += float(loss)
+            self._block_loss_count += 1
+
+       # Decide whether to emit feedback
+        if (
+            self.enabled
+            and loss is not None
+            and self.message_every > 0
+            and (self._step % self.message_every == 0)
+            and self._block_loss_count > 0
+        ):
+            current_avg = self._block_loss_sum / self._block_loss_count
+
             try:
-                message = self.personality(loss, self._prev_loss, self._step)
+                #message = self.personality(loss, self._prev_loss, self._step)
+                message = self.personality(
+                    current_avg,
+                    self._prev_avg_loss,
+                    self._step,
+                )
             except Exception:
                 # Personality logic should never break training.
                 message = None
@@ -60,8 +87,11 @@ class EmotionalOptimizer:
             if message:
                 self.print_fn(message)
 
-        if loss is not None:
-            self._prev_loss = loss
+            # Prepare for next block
+            self._prev_avg_loss = current_avg
+            self._block_loss_sum = 0.0
+            self._block_loss_count = 0
+
 
         return result
 

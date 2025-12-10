@@ -16,6 +16,7 @@ def test_smoke_emotional_optimizer_wraps_optimizer():
     loss.backward()
     emo_opt.step()
 
+
 # Verify that personalities are called correctly and messages are routed through the configured print_fn.
 def test_smoke_emotional_optimizer_personality():
     model = torch.nn.Linear(2, 1)
@@ -50,6 +51,7 @@ def test_smoke_emotional_optimizer_personality():
 
     assert len(messages) == 2
 
+
 # Confirm personality is called when loss is provided and enabled=True
 def test_smoke_emotional_optimizer_personality_called():
     model = torch.nn.Linear(2, 1)
@@ -77,6 +79,7 @@ def test_smoke_emotional_optimizer_personality_called():
     emo_opt.step(loss=loss.item())
 
     assert len(called) == 1
+
 
 # Confirm personality is NOT called when enabled=False
 def test_smoke_emotional_optimizer_personality_not_called_when_disabled():

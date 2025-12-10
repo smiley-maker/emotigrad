@@ -72,6 +72,7 @@ def test_emotional_optimizer_calls_personality_when_enabled():
     assert len(messages) == 1
     assert "step=1" in messages[0]
 
+
 # Confirm personality is NOT called when enabled=False
 def test_emotional_optimizer_personality_not_called_when_disabled():
     model = torch.nn.Linear(2, 1)
@@ -100,6 +101,7 @@ def test_emotional_optimizer_personality_not_called_when_disabled():
 
     assert len(called) == 0
 
+
 # Confirm personality is called when loss is provided and enabled=True
 def test_smoke_emotional_optimizer_personality_called():
     model = torch.nn.Linear(2, 1)
@@ -127,6 +129,7 @@ def test_smoke_emotional_optimizer_personality_called():
     emo_opt.step(loss=loss.item())
 
     assert len(called) == 1
+
 
 # Confirm exceptions inside personalities do not crash step() and are safely swallowed
 def test_emotional_optimizer_personality_exceptions_handled():

@@ -66,7 +66,9 @@ class QuietPersonality:
     def __init__(self, every_n_steps: int = 10) -> None:
         self.every_n_steps = every_n_steps
 
-    def __call__(self, loss: float, prev_loss: Optional[float], step: int) -> Optional[str]:
+    def __call__(
+        self, loss: float, prev_loss: Optional[float], step: int
+    ) -> Optional[str]:
         if step % self.every_n_steps != 0:
             return None
         return f"🔎 Step {step}: current loss {loss:.4f}"
