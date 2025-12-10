@@ -10,6 +10,27 @@ dependencies = [
     "torch"
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "ruff",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+select = ["E", "F", "I"]  # E/F = pycodestyle+pyflakes, I = isort rules
+ignore = [
+    "E501",  # Let Black handle line length
+]
+
+[tool.ruff.format]
+# If you prefer Ruff *only* for linting and keep Black as formatter:
+skip = true
+
+
 [tool.setuptools]
 package-dir = {"" = "src"}  # ← tells setuptools where your package root is
 
