@@ -26,11 +26,6 @@ ignore = [
     "E501",  # Let Black handle line length
 ]
 
-[tool.ruff.format]
-# If you prefer Ruff *only* for linting and keep Black as formatter:
-skip = true
-
-
 [tool.setuptools]
 package-dir = {"" = "src"}  # ← tells setuptools where your package root is
 
