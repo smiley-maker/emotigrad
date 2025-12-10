@@ -10,6 +10,7 @@ Run with:
 """
 
 import torch
+
 from emotigrad import EmotionalOptimizer
 
 
@@ -23,8 +24,8 @@ def main():
     # Wrap with EmotiGrad!
     opt = EmotionalOptimizer(
         base_opt,
-        personality="wholesome",   # try "sassy" or write your own!
-        message_every=5,           # emotional feedback every 5 steps
+        personality="wholesome",  # try "sassy" or write your own!
+        message_every=5,  # emotional feedback every 5 steps
     )
 
     # Synthetic training loop

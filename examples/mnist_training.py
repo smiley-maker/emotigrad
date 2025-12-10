@@ -6,9 +6,11 @@ from torchvision import datasets, transforms
 from emotigrad import EmotionalOptimizer
 
 # --- Data ---
-transform = transforms.Compose([
-    transforms.ToTensor(),
-])
+transform = transforms.Compose(
+    [
+        transforms.ToTensor(),
+    ]
+)
 
 train_dataset = datasets.MNIST(
     root="data",

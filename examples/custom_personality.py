@@ -5,10 +5,11 @@ Shows how to write a Personality callable and pass it to EmotionalOptimizer.
 """
 
 import torch
+
 from emotigrad import EmotionalOptimizer
 
-
 # --- Custom Personality -------------------------------------------------------
+
 
 def roast(loss, prev_loss, step):
     """A sarcastic personality that roasts the model's progress."""
@@ -29,6 +30,7 @@ def roast(loss, prev_loss, step):
 
 # --- Training Loop ------------------------------------------------------------
 
+
 def main():
     model = torch.nn.Linear(5, 1)
     base_opt = torch.optim.SGD(model.parameters(), lr=0.1)
@@ -36,8 +38,8 @@ def main():
     # Use the custom roast personality
     opt = EmotionalOptimizer(
         base_opt,
-        personality=roast,   # <-- pass the callable directly
-        message_every=3,     # roast based on averaged loss every 3 steps
+        personality=roast,  # <-- pass the callable directly
+        message_every=3,  # roast based on averaged loss every 3 steps
     )
 
     for step in range(12):

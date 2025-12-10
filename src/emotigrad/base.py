@@ -24,7 +24,7 @@ class EmotionalOptimizer:
     personality: PersonalityLike = "wholesome"
     enabled: bool = True
     print_fn: callable = print  # allows tests / users to override output
-    message_every : int = 1 # Number of steps between messages
+    message_every: int = 1  # Number of steps between messages
 
     def __post_init__(self) -> None:
         self._step: int = 0
@@ -63,7 +63,7 @@ class EmotionalOptimizer:
             self._block_loss_sum += float(loss)
             self._block_loss_count += 1
 
-       # Decide whether to emit feedback
+        # Decide whether to emit feedback
         if (
             self.enabled
             and loss is not None
@@ -74,7 +74,7 @@ class EmotionalOptimizer:
             current_avg = self._block_loss_sum / self._block_loss_count
 
             try:
-                #message = self.personality(loss, self._prev_loss, self._step)
+                # message = self.personality(loss, self._prev_loss, self._step)
                 message = self.personality(
                     current_avg,
                     self._prev_avg_loss,
@@ -91,7 +91,6 @@ class EmotionalOptimizer:
             self._prev_avg_loss = current_avg
             self._block_loss_sum = 0.0
             self._block_loss_count = 0
-
 
         return result
 

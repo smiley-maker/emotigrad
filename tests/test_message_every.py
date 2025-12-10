@@ -1,4 +1,5 @@
 import torch
+
 from emotigrad import EmotionalOptimizer
 
 
