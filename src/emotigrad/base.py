@@ -1,59 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Protocol, runtime_checkable
+from typing import Optional, Union, Callable
 
 from torch.optim import Optimizer
 
-
-@runtime_checkable
-class Personality(Protocol):
-    """Protocol for personality callables."""
-
-    def __call__(
-        self,
-        loss: float,
-        prev_loss: Optional[float],
-        step: int,
-    ) -> Optional[str]:
-        """Generate an emotional message based on the optimization state.
-
-        Parameters
-        ----------
-        loss:
-            Current scalar loss value.
-        prev_loss:
-            Previous scalar loss value, or None if this is the first step.
-        step:
-            Current optimization step count (starting from 1).
-        Returns:
-            An optional string message to emit.
-        """
-        ...
+from .types import Personality
 
 
-def _default_personality(
-    loss: float,
-    prev_loss: Optional[float],
-    step: int,
-) -> Optional[str]:
-    """Very minimal 'wholesome' personality for early versions.
-
-    You can expand this or move it into a dedicated personalities module later.
-    """
-    if prev_loss is None:
-        return f"✨ Starting our journey! Initial loss: {loss:.4f}"
-
-    if loss < prev_loss:
-        return f"💖 Nice! Loss improved from {prev_loss:.4f} to {loss:.4f}."
-
-    if loss > prev_loss:
-        return (
-            f"🌱 It's okay! Loss went from {prev_loss:.4f} to {loss:.4f}. "
-            "Learning isn't always linear."
-        )
-
-    return None
+PersonalityLike = Union[str, Personality]
 
 
 @dataclass
@@ -67,7 +22,7 @@ class EmotionalOptimizer:
     """
 
     optimizer: Optimizer
-    personality: Personality = _default_personality
+    personality: PersonalityLike = "wholesome"
     enabled: bool = True
     print_fn: callable = print  # allows tests / users to override output
 
@@ -75,6 +30,14 @@ class EmotionalOptimizer:
         self._step: int = 0
         self._prev_loss: Optional[float] = None
 
+        # Resolve personality if given as a string
+        if isinstance(self.personality, str):
+            # Lazy import to avoid circular imports
+            from .personalities import get_personality
+
+            self.personality = get_personality(self.personality)
+
+            
     def step(self, loss: Optional[float] = None, *args, **kwargs):
         """Perform an optimization step and optionally emit emotional feedback.
 
