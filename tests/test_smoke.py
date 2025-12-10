@@ -1,5 +1,7 @@
-from emotigrad import EmotionalOptimizer
 import torch
+
+from emotigrad import EmotionalOptimizer
+
 
 def test_smoke_emotional_optimizer_wraps_optimizer():
     model = torch.nn.Linear(2, 1)
