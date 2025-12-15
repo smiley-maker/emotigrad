@@ -77,7 +77,9 @@ class QuietPersonality:
 def nervous(loss: float, prev_loss: Optional[float], step: int) -> Optional[str]:
     """A nervous, anxious personality that worries about everything."""
     if prev_loss is None:
-        return f"😰 Oh no, here we go... Initial loss is {loss:.4f}. I hope this works..."
+        return (
+            f"😰 Oh no, here we go... Initial loss is {loss:.4f}. I hope this works..."
+        )
 
     if loss < prev_loss:
         return (

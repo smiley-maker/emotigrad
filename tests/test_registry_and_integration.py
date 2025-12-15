@@ -85,7 +85,7 @@ class TestRegistryWithObjects:
         optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
 
         emo_opt = EmotionalOptimizer(
-            optimizer, personality=lambda l, p, s: f"Lambda: {l}"
+            optimizer, personality=lambda loss, _p, _s: f"Lambda: {loss}"
         )
 
         assert callable(emo_opt.personality)
@@ -287,7 +287,7 @@ class TestMessageEverySmoothing:
 
         emo_opt = EmotionalOptimizer(
             optimizer,
-            personality=lambda l, p, s: "msg",
+            personality=lambda _l, _p, _s: "msg",
             print_fn=messages.append,
             message_every=0,
         )
@@ -306,7 +306,7 @@ class TestMessageEverySmoothing:
 
         emo_opt = EmotionalOptimizer(
             optimizer,
-            personality=lambda l, p, s: "msg",
+            personality=lambda _l, _p, _s: "msg",
             print_fn=messages.append,
             message_every=1,
         )

@@ -1,16 +1,15 @@
 # tests/test_colors.py
 """Tests for the colored output module."""
 
-import pytest
 
 from emotigrad.colors import (
     BLUE,
     BOLD,
-    ColoredPrinter,
     GREEN,
     PERSONALITY_COLORS,
     RED,
     RESET,
+    ColoredPrinter,
     colorize,
     create_colored_print_fn,
     get_personality_colors,

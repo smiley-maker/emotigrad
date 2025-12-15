@@ -146,7 +146,7 @@ class TestRegistry:
     def test_register_personality_prevents_overwrite_by_default(self):
         """Registering an existing name should raise ValueError."""
         with pytest.raises(ValueError):
-            register_personality("wholesome", lambda l, p, s: "test")
+            register_personality("wholesome", lambda _l, _p, _s: "test")
 
     def test_register_personality_allows_overwrite_when_specified(self):
         """Overwrite should work when explicitly allowed."""
