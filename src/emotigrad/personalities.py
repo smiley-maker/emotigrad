@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 from typing import Dict, List, Optional
@@ -266,16 +265,17 @@ def zen(loss: float, prev_loss: Optional[float], step: int) -> Optional[str]:
 
     return f"🌸 Stillness. Loss remains at {loss:.4f}. Find peace in the plateau."
 
-def baddie(loss: float, prev_loss:Optional[float], step:int)-> Optional[str]:
-    """A confident, unbothered baddie personality."""    
-    if prev_loss is None: 
+
+def baddie(loss: float, prev_loss: Optional[float], step: int) -> Optional[str]:
+    """A confident, unbothered baddie personality."""
+    if prev_loss is None:
         return (
             f"Girlllll no man, nail or initial loss is worth crying for 💅"
             f"{loss:.4f}"
         )
-    if loss<prev_loss:
+    if loss < prev_loss:
         return (
-            f"💅 PERIOD. {prev_loss:.4f} → {loss:.4f}. We don't do bad runs here, bestie."            
+            f"💅 PERIOD. {prev_loss:.4f} → {loss:.4f}. We don't do bad runs here, bestie."
             f"{loss:.4f}"
         )
     if loss > prev_loss:
@@ -284,6 +284,7 @@ def baddie(loss: float, prev_loss:Optional[float], step:int)-> Optional[str]:
             f"{loss:.4f}"
         )
     return f"💅 Loss at {loss:.4f}? Serving consistency I guess..."
+
 
 # --- Registry ---------------------------------------------------------------
 
@@ -300,7 +301,7 @@ _PERSONALITY_REGISTRY: Dict[str, Personality] = {
     "academic": academic,
     "pirate": pirate,
     "zen": zen,
-    "baddie": baddie
+    "baddie": baddie,
 }
 
 
